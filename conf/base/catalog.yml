@@ -43,8 +43,36 @@
 # This is a data set used by the "Hello World" example pipeline provided with the project
 # template. Please feel free to remove it once you remove the example pipeline.
 
+example_iris_data_part:
+  type: PartitionedDataSet
+  dataset: pandas.CSVDataSet
+  path: data/01_raw
+  filename_suffix: .csv
+
 example_iris_data:
   type: pandas.CSVDataSet
   filepath: data/01_raw/iris.csv
+
+fruit_data_train:
+  type: samplemlproject.datasets.imageflowdataset.ImageFlowDataset
+  filepath: /Users/djohn/Projects/01_general/04_engineering_data/fruits-360_dataset/fruits-360
+  classes:
+    - Avocado
+    - Banana
+  sub_dir: Training
+  rescale: 0.00392156862745098 # 1/255.
+  target_size: [100, 100]
+  batch_size: 16
+
+fruit_data_test:
+  type: samplemlproject.datasets.imageflowdataset.ImageFlowDataset
+  filepath: /Users/djohn/Projects/01_general/04_engineering_data/fruits-360_dataset/fruits-360
+  classes:
+    - Avocado
+    - Banana
+  sub_dir: Test
+  rescale: 0.00392156862745098 # 1/255.
+  target_size: [100, 100]
+  batch_size: 16
 
 

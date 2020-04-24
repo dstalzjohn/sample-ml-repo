@@ -9,13 +9,13 @@ def create_pipeline(**kwargs):
 
     model_node = node(
         get_simple_model,
-        inputs=dict(input_shape="params:input_shape"),
+        inputs=dict(input_shape="params:input_shape", output_classes="params:n_classes"),
         outputs=dict(model="model"),
     )
 
     compile_node = node(
         compile_model,
-        inputs=dict(model="model"),
+        inputs=dict(model="model", output_classes_count="params:n_classes"),
         outputs=dict(compiled_model="compiled_model"),
     )
 

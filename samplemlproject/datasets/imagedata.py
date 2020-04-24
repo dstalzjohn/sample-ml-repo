@@ -32,6 +32,7 @@ def get_image_flow_directory_generator(filepath: str,
     image_set = image_generator.flow_from_directory(target_dir,
                                                     target_size=target_size,
                                                     batch_size=batch_size,
-                                                    class_mode=class_mode)
+                                                    class_mode=class_mode,
+                                                    classes=classes)
 
     return image_set

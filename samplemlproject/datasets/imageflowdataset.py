@@ -24,7 +24,7 @@ class ImageFlowDataset(AbstractDataSet):
         self.classes = classes
 
     def _load(self) -> Any:
-        return get_image_flow_directory_generator(
+        flow_data_gen = get_image_flow_directory_generator(
             self.file_path,
             self.batch_size,
             self.sub_dir,
@@ -32,6 +32,7 @@ class ImageFlowDataset(AbstractDataSet):
             self.rescale,
             self.classes
         )
+        return flow_data_gen
 
     def _save(self, data: Any) -> None:
         pass
