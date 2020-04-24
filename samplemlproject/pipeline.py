@@ -43,6 +43,7 @@ from kedro.pipeline import Pipeline
 
 from samplemlproject.pipelines import data_engineering as de
 from samplemlproject.pipelines import data_science as ds
+from samplemlproject.pipelines import defaultpipeline
 
 
 def create_pipelines(**kwargs) -> Dict[str, Pipeline]:
@@ -63,6 +64,6 @@ def create_pipelines(**kwargs) -> Dict[str, Pipeline]:
     return {
         "de": data_engineering_pipeline,
         "ds": data_science_pipeline,
-        "__default__": data_engineering_pipeline + data_science_pipeline,
+        "__default__": defaultpipeline.create_pipeline(),
     }
 

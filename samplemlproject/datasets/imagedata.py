@@ -34,4 +34,4 @@ def get_image_flow_directory_generator(filepath: str,
                                                     batch_size=batch_size,
                                                     class_mode=class_mode)
 
-    return dict(image_set=image_set)
+    return image_set

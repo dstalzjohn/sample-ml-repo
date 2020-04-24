@@ -6,20 +6,10 @@ from samplemlproject.procedures.defaulttrain import fit_generator
 
 
 def create_pipeline(**kwargs):
-    data_node = node(
-        get_image_flow_directory_generator,
-        dict(filepath="/Users/djohn/Projects/01_general/04_engineering_data/fruits-360_dataset/fruits-360",
-             batch_size="",
-             sub_dir="Training",
-             rescale=1/255.,
-             classes=["Avocado", "Banana"],
-             ),
-        dict(data_set="data_set"),
-    )
 
     model_node = node(
         get_simple_model,
-        inputs=dict(),
+        inputs=dict(input_shape="params:input_shape"),
         outputs=dict(model="model"),
     )
 
@@ -31,13 +21,14 @@ def create_pipeline(**kwargs):
 
     train_node = node(
         fit_generator,
-        inputs=dict(model="compiled_model"),
-        outputs=dict(history="history", final_model="model")
+        inputs=dict(model="compiled_model",
+                    train_set="fruit_data_train",
+                    validation_set="fruit_data_test"),
+        outputs=dict(history="history", model="final_model")
     )
 
     return Pipeline(
         [
-            data_node,
             model_node,
             compile_node,
             train_node
