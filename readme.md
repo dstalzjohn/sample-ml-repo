@@ -1,12 +1,6 @@
-# kedro-sample
+# sample-ml-repo
 
 ## Overview
-
-This is your new Kedro project, which was generated using `Kedro 0.15.9` by running:
-
-```
-kedro new
-```
 
 Take a look at the [documentation](https://kedro.readthedocs.io) to get started.
 

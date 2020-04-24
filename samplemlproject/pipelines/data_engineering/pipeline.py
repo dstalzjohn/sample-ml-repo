@@ -36,13 +36,15 @@ from kedro.pipeline import Pipeline, node
 
 from .nodes import split_data
 
+ds_name = "example_iris_data_part"
+
 
 def create_pipeline(**kwargs):
     return Pipeline(
         [
             node(
                 split_data,
-                ["example_iris_data", "params:example_test_data_ratio"],
+                [ds_name, "params:train_data_name", "params:example_test_data_ratio"],
                 dict(
                     train_x="example_train_x",
                     train_y="example_train_y",

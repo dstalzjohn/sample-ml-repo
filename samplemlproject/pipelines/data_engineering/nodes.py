@@ -31,18 +31,19 @@ just for illustrating basic Kedro features.
 PLEASE DELETE THIS FILE ONCE YOU START WORKING ON YOUR OWN PROJECT!
 """
 
-from typing import Any, Dict
+from typing import Any, Dict, Callable
 
 import pandas as pd
 
 
-def split_data(data: pd.DataFrame, example_test_data_ratio: float) -> Dict[str, Any]:
+def split_data(data_dict: Dict[str, Callable[[], pd.DataFrame]], name: str, example_test_data_ratio: float) -> Dict[str, Any]:
     """Node for splitting the classical Iris data set into training and test
     sets, each split into features and labels.
     The split ratio parameter is taken from conf/project/parameters.yml.
     The data and the parameters will be loaded and provided to your function
     automatically when the pipeline is executed and it is time to run this node.
     """
+    data: pd.DataFrame = data_dict[name]()
     data.columns = [
         "sepal_length",
         "sepal_width",

@@ -10,6 +10,8 @@ kedro = "^0.15.9"
 python-dotenv = "^0.13.0"
 kedro-viz = "^3.2.0"
 dvc = "^0.93.0"
+tensorflow-cpu = "^2.1.0"
+keras = "^2.3.1"
 
 
 [tool.poetry.dev-dependencies]
