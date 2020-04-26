@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from keras.models import Sequential
+from keras.models import Sequential, Model
 from keras.layers import Conv2D, Activation, LeakyReLU, BatchNormalization
 from keras.layers import MaxPooling2D
 from keras.layers import Flatten
@@ -39,7 +39,7 @@ def get_simple_model(input_shape: Tuple, output_classes: int) -> dict:
     return dict(model=model)
 
 
-def compile_model(model, output_classes_count: int):
+def compile_model(model: Model, output_classes_count: int):
     loss = 'binary_crossentropy' if output_classes_count == 1 else 'categorical_crossentropy'
 
     model.compile(optimizer=RMSprop(lr=0.0001, decay=1e-6), loss=loss, metrics=['accuracy'])
