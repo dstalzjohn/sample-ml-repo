@@ -41,7 +41,7 @@ from kedro.pipeline import Pipeline
 # well as pipelines/data_science AND pipelines/data_engineering
 # -------------------------------------------------------------------------
 
-from samplemlproject.pipelines import defaultpipeline
+from samplemlproject.pipelines import trainpipeline
 
 
 def create_pipelines() -> Dict[str, Pipeline]:
@@ -56,6 +56,6 @@ def create_pipelines() -> Dict[str, Pipeline]:
     """
 
     return {
-        "__default__": defaultpipeline.create_pipeline(),
+        "__default__": trainpipeline.create_pipeline(),
     }
 
