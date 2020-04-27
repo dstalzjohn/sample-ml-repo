@@ -29,7 +29,8 @@ def create_pipeline(**kwargs):
 
     train_node = node(
         fit_generator,
-        inputs=dict(model="compiled_model",
+        inputs=dict(epochs="params:epochs",
+            model="compiled_model",
                     train_set="fruit_data_train",
                     validation_set="fruit_data_test"),
         outputs=dict(history="history", model="final_model")
