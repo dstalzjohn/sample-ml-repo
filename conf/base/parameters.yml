@@ -9,6 +9,11 @@ train_data_name: iris
 
 epochs: 10
 
+callbacks:
+  - type: samplemlproject.callbacks.callback_factories.model_callback_factory
+    params:
+      filepath: experiment_outputs/$RUN_ID/models/$RUN_ID-model-ep{epoch:03d}.hdf5
+
 optimizer:
   type: keras.optimizers.RMSprop
   params:

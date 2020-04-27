@@ -1,12 +1,12 @@
 from kedro.pipeline import Pipeline, node
 
-from samplemlproject.datasets.imagedata import get_image_flow_directory_generator
+from samplemlproject.callbacks.createcallbacks import create_callbacks_node
 from samplemlproject.models.simplemodel import get_simple_model, compile_model
 from samplemlproject.procedures.defaulttrain import fit_generator
 from samplemlproject.utilities.factoryutils import class_or_func_creation_node
 
 
-def create_pipeline(**kwargs):
+def create_pipeline():
 
     model_node = node(
         get_simple_model,
@@ -27,12 +27,19 @@ def create_pipeline(**kwargs):
         outputs=dict(compiled_model="compiled_model"),
     )
 
+    callback_node = node(
+        create_callbacks_node,
+        inputs=["params:callbacks"],
+        outputs=dict(callbacks="init_callbacks")
+    )
+
     train_node = node(
         fit_generator,
         inputs=dict(epochs="params:epochs",
-            model="compiled_model",
+                    model="compiled_model",
                     train_set="fruit_data_train",
-                    validation_set="fruit_data_test"),
+                    validation_set="fruit_data_test",
+                    callbacks="init_callbacks"),
         outputs=dict(history="history", model="final_model")
     )
 
@@ -41,6 +48,7 @@ def create_pipeline(**kwargs):
             model_node,
             optimizer_node,
             compile_node,
+            callback_node,
             train_node
         ]
     )

@@ -28,11 +28,13 @@
 
 """Application entry point."""
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Union
+import os
 
 from kedro.context import KedroContext, load_context
 from kedro.pipeline import Pipeline
 
+from samplemlproject.config.envconfig import RUN_ID_KEY
 from samplemlproject.pipeline import create_pipelines
 
 
@@ -41,8 +43,18 @@ class ProjectContext(KedroContext):
     or create new ones (e.g. as required by plugins)
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._local_run_id = self._get_save_version()
+        os.environ[RUN_ID_KEY] = self._local_run_id
+
     project_name = "kedro-sample"
     project_version = "0.15.9"
+
+    def _get_run_id(
+        self, *args, **kwargs  # pylint: disable=unused-argument
+    ) -> Union[None, str]:
+        return self._local_run_id
 
     def _get_pipelines(self) -> Dict[str, Pipeline]:
         return create_pipelines()
