@@ -34,8 +34,9 @@ import os
 from kedro.context import KedroContext, load_context
 from kedro.pipeline import Pipeline
 
-from samplemlproject.config.envconfig import RUN_ID_KEY
+from samplemlproject.config.envconfig import RUN_ID_KEY, SHORT_ID_KEY
 from samplemlproject.pipeline import create_pipelines
+from samplemlproject.utilities.hashutils import generate_short_id
 
 
 class ProjectContext(KedroContext):
@@ -46,7 +47,9 @@ class ProjectContext(KedroContext):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._local_run_id = self._get_save_version()
+        self._local_short_id = generate_short_id(self._local_run_id)
         os.environ[RUN_ID_KEY] = self._local_run_id
+        os.environ[SHORT_ID_KEY] = self._local_short_id
 
     project_name = "kedro-sample"
     project_version = "0.15.9"
