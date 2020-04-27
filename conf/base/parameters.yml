@@ -7,6 +7,12 @@ example_num_train_iter: 10000
 example_learning_rate: 0.01
 train_data_name: iris
 
+optimizer:
+  type: keras.optimizers.RMSprop
+  params:
+    lr: 0.0001
+    decay: 0.000001
+
 data_file_path: /Users/djohn/Projects/01_general/04_engineering_data/fruits-360_dataset/fruits-360
 n_classes: 1
 scaling: 0.00392156862745098 # 1/255.

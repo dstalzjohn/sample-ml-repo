@@ -3,6 +3,7 @@ from kedro.pipeline import Pipeline, node
 from samplemlproject.datasets.imagedata import get_image_flow_directory_generator
 from samplemlproject.models.simplemodel import get_simple_model, compile_model
 from samplemlproject.procedures.defaulttrain import fit_generator
+from samplemlproject.utilities.factoryutils import class_or_func_creation_node
 
 
 def create_pipeline(**kwargs):
@@ -13,9 +14,16 @@ def create_pipeline(**kwargs):
         outputs=dict(model="model"),
     )
 
+    optimizer_node = node(
+        class_or_func_creation_node,
+        inputs=["params:optimizer"],
+        outputs={"class": "optimizer"}
+    )
+
     compile_node = node(
         compile_model,
-        inputs=dict(model="model", output_classes_count="params:n_classes"),
+        inputs=dict(model="model", output_classes_count="params:n_classes",
+                    optimizer="optimizer"),
         outputs=dict(compiled_model="compiled_model"),
     )
 
@@ -30,6 +38,7 @@ def create_pipeline(**kwargs):
     return Pipeline(
         [
             model_node,
+            optimizer_node,
             compile_node,
             train_node
         ]

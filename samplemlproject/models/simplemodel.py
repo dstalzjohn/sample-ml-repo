@@ -6,7 +6,7 @@ from keras.layers import MaxPooling2D
 from keras.layers import Flatten
 from keras.layers import Dropout
 from keras.layers import Dense
-from keras.optimizers import RMSprop
+from keras.optimizers import Optimizer, RMSprop
 
 
 def get_simple_model(input_shape: Tuple, output_classes: int) -> dict:
@@ -39,10 +39,10 @@ def get_simple_model(input_shape: Tuple, output_classes: int) -> dict:
     return dict(model=model)
 
 
-def compile_model(model: Model, output_classes_count: int):
+def compile_model(model: Model, output_classes_count: int, optimizer: Optimizer):
     loss = 'binary_crossentropy' if output_classes_count == 1 else 'categorical_crossentropy'
 
-    model.compile(optimizer=RMSprop(lr=0.0001, decay=1e-6), loss=loss, metrics=['accuracy'])
+    model.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
 
     return dict(compiled_model=model)
 
