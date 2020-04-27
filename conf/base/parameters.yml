@@ -13,6 +13,9 @@ callbacks:
   - type: samplemlproject.callbacks.callback_factories.model_callback_factory
     params:
       filepath: experiment_outputs/$RUN_ID/models/$RUN_ID-model-ep{epoch:03d}.hdf5
+  - type: samplemlproject.callbacks.callback_factories.logging_callback_output
+    params:
+      filename: experiment_outputs/$RUN_ID/logs/train_logs.csv
 
 optimizer:
   type: keras.optimizers.RMSprop
