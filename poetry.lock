@@ -58,7 +58,7 @@ version = "1.4.3"
 [[package]]
 category = "main"
 description = "Disable App Nap on OS X 10.9"
-marker = "python_version >= \"3.4\" and sys_platform == \"darwin\" or python_version >= \"3.4\" and platform_system == \"Darwin\" or python_version >= \"3.3\" and sys_platform == \"darwin\" or sys_platform == \"darwin\""
+marker = "sys_platform == \"darwin\" or platform_system == \"Darwin\" or python_version >= \"3.3\" and sys_platform == \"darwin\" or python_version >= \"3.4\" and sys_platform == \"darwin\" or python_version >= \"3.4\" and platform_system == \"Darwin\""
 name = "appnope"
 optional = false
 python-versions = "*"
@@ -1393,7 +1393,7 @@ version = "0.1.2"
 [[package]]
 category = "main"
 description = "Pexpect allows easy control of interactive console applications."
-marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or python_version >= \"3.3\" and sys_platform != \"win32\" or sys_platform != \"win32\""
+marker = "python_version >= \"3.3\" and sys_platform != \"win32\" or sys_platform != \"win32\" or python_version >= \"3.4\" and sys_platform != \"win32\""
 name = "pexpect"
 optional = false
 python-versions = "*"
@@ -1499,7 +1499,7 @@ six = ">=1.9"
 [[package]]
 category = "main"
 description = "Run a subprocess in a pseudo terminal"
-marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or os_name != \"nt\" or python_version >= \"3.3\" and sys_platform != \"win32\" or sys_platform != \"win32\""
+marker = "python_version >= \"3.4\" and sys_platform != \"win32\" or python_version >= \"3.3\" and sys_platform != \"win32\" or sys_platform != \"win32\" or os_name != \"nt\" or python_version >= \"3.3\" and sys_platform != \"win32\" and (python_version >= \"3.4\" and sys_platform != \"win32\" or python_version >= \"3.3\" and sys_platform != \"win32\" or sys_platform != \"win32\") or python_version >= \"3.4\" and sys_platform != \"win32\" and (python_version >= \"3.4\" and sys_platform != \"win32\" or python_version >= \"3.3\" and sys_platform != \"win32\" or sys_platform != \"win32\")"
 name = "ptyprocess"
 optional = false
 python-versions = "*"
@@ -2335,7 +2335,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "cd126398363a345457c509120152f3470280f25351da5b74b358c932f003d39d"
+content-hash = "8aad5f9fcad2fea9bed3d2f01ac9893dc935d7b251ce70ad86e8f59ef53c40a7"
 python-versions = "3.7"
 
 [metadata.files]

@@ -33,6 +33,17 @@ class ExperimentData(object):
         return metrics
 
     def get_log_for_metric(self, metric_name: str):
-        return self.log_data[metric_name]
+        series_epoch = self.log_data["epoch"]
+        series_metrics = self.log_data[metric_name]
+        series_name = pd.Series(data=[self.short_id] * len(series_epoch))
+        df = pd.DataFrame({"epoch": series_epoch, metric_name: series_metrics, "name": series_name})
+
+        return df
+
+
+if __name__ == '__main__':
+    p = "/Users/djohn/Projects/01_general/01_repos/sample-ml-project/experiment_outputs/2020-04-28T12.43.31.264Z-id_njs3"
+    exp = ExperimentData(p)
+    df = exp.get_log_for_metric("val_accuracy")
 
 

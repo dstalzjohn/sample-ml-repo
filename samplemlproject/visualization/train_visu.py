@@ -1,14 +1,12 @@
 import os
-from collections import defaultdict
 from typing import Dict, Any
+import altair
 
 import streamlit as st
-# To make things easier later, we're also importing numpy and pandas for
-# working with sample data.
-import numpy as np
 import pandas as pd
 from samplemlproject.utilities.experimentdata import ExperimentData
 
+# the default metrics are shown as true
 default_metrics = ["val_accuracy"]
 
 st.title("Monitor your trainings!")
@@ -28,18 +26,27 @@ for met in metric_set:
         visualized_metrics.append(met)
 
 st.sidebar.markdown("Found Experiments")
-exp: ExperimentData
-chart_log_dict: Dict[str, dict] = defaultdict(dict)
+checked_experiments = []
 for exp in experiments:
-    for met in visualized_metrics:
-        if st.sidebar.checkbox(f"ID: {exp.short_id} - TS: {exp.run_id}", value=True):
-            chart_log_dict[met][exp.short_id] = list(exp.get_log_for_metric(met))
+    if st.sidebar.checkbox(f"ID: {exp.short_id} - TS: {exp.run_id}", value=True):
+        checked_experiments.append(exp)
+exp: ExperimentData
+chart_log_dict: Dict[str, Any] = dict()
+for met in visualized_metrics:
+    for exp in checked_experiments:
+        if met not in chart_log_dict:
+            chart_log_dict[met] = exp.get_log_for_metric(met)
+        else:
+            chart_log_dict[met] = pd.concat([chart_log_dict[met], exp.get_log_for_metric(met)])
+    if met not in chart_log_dict:
+        continue
+    chart_data = altair.Chart(chart_log_dict[met]).mark_line().encode(
+        x='epoch',
+        y=met,
+        color='name',
+    )
+    st.write(chart_data)
 
-st.write(chart_log_dict)
 
-chart_data = pd.DataFrame(
-   np.random.randn(20, 3),
-   columns=['a', 'b', 'c'])
 
-st.line_chart(chart_data)
 
