@@ -54,8 +54,10 @@ def create_pipelines() -> Dict[str, Pipeline]:
         A mapping from a pipeline name to a ``Pipeline`` object.
 
     """
+    train_pl = trainpipeline.create_pipeline()
 
     return {
-        "__default__": trainpipeline.create_pipeline(),
+        "train": train_pl,
+        "__default__": train_pl,
     }
 
