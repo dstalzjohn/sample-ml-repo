@@ -15,9 +15,10 @@ callbacks:
     params:
       filename: experiment_outputs/$RUN_ID-id_$SHORT_ID/logs/train_logs.csv
   # This callback saves the git version of the given dirs and modules (a commit is required before the run)
-  - type: samplemlproject.callbacks.callback_factories.git_callback_factory
+  # and stores some other project relevant information
+  - type: samplemlproject.callbacks.callback_factories.ccmlproject_callback_factory
     params:
-      filepath: experiment_outputs/$RUN_ID-id_$SHORT_ID/git_versions.yml
+      filepath: experiment_outputs/$RUN_ID-id_$SHORT_ID
       git_modules: samplemlproject
 
 # Optimizer is used in the experiment
