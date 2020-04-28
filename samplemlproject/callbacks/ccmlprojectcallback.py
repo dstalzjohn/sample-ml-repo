@@ -5,11 +5,11 @@ import yaml
 from keras.callbacks import Callback, CSVLogger
 
 from samplemlproject.callbacks.gitversioncallback import produce_git_version_yaml
-from samplemlproject.config.envconfig import get_run_id, get_short_id
+from samplemlproject.config.envconfig import get_run_id, get_short_id, RUN_ID_KEY, SHORT_ID_KEY
 
 
 def produce_project_info(filepath: str):
-    out_dict = dict(run_id=get_run_id(), short_id=get_short_id())
+    out_dict = {RUN_ID_KEY: get_run_id(), SHORT_ID_KEY: get_short_id()}
     with open(filepath, 'w') as outfile:
         yaml.dump(out_dict, outfile, default_flow_style=False)
 
