@@ -9,6 +9,53 @@ from samplemlproject.utilities.experimentdata import ExperimentData
 # the default metrics are shown as true
 default_metrics = ["val_accuracy"]
 
+
+def generate_chart(source, metric):
+    # Create a selection that chooses the nearest point & selects based on x-value
+    nearest = altair.selection(type='single', nearest=True, on='mouseover',
+                            fields=['epoch'], empty='none')
+
+    line = altair.Chart(source).mark_line().encode(
+        x='epoch',
+        y=met,
+        color='name',
+    )
+
+    # Transparent selectors across the chart. This is what tells us
+    # the x-value of the cursor
+    selectors = altair.Chart(source).mark_point().encode(
+        x='epoch',
+        opacity=altair.value(0),
+    ).add_selection(
+        nearest
+    )
+
+    # Draw points on the line, and highlight based on selection
+    points = line.mark_point().encode(
+        opacity=altair.condition(nearest, altair.value(1), altair.value(0))
+    )
+
+    # Draw text labels near the points, and highlight based on selection
+    text = line.mark_text(align='left', dx=5, dy=-5).encode(
+        text=altair.condition(nearest, metric + ':Q', altair.value(' '))
+    )
+
+    # Draw a rule at the location of the selection
+    rules = altair.Chart(source).mark_rule(color='gray').encode(
+        x='epoch:Q',
+    ).transform_filter(
+        nearest
+    )
+
+    final = altair.layer(
+        line, selectors, points, rules, text
+    ).properties(
+        width=600, height=400
+    )
+
+    return final
+
+
 st.title("Monitor your trainings!")
 folder = "experiment_outputs"
 subfolders = [f.path for f in os.scandir(folder) if f.is_dir()]
@@ -40,11 +87,7 @@ for met in visualized_metrics:
             chart_log_dict[met] = pd.concat([chart_log_dict[met], exp.get_log_for_metric(met)])
     if met not in chart_log_dict:
         continue
-    chart_data = altair.Chart(chart_log_dict[met]).mark_line().encode(
-        x='epoch',
-        y=met,
-        color='name',
-    )
+    chart_data = generate_chart(chart_log_dict[met], met)
     st.write(chart_data)
 
 
