@@ -1,5 +1,5 @@
 import os
-from typing import Dict, Any
+from typing import Dict, Any, List, Tuple
 import altair
 
 import streamlit as st
@@ -8,6 +8,19 @@ from samplemlproject.utilities.experimentdata import ExperimentData
 
 # the default metrics are shown as true
 default_metrics = ["val_accuracy"]
+
+
+def get_best_experiments(exp_list: List[ExperimentData],
+                         metric_name: str,
+                         mode: str,
+                         number_of_exps: int) -> List[Tuple[str, ExperimentData]]:
+    number_of_exps = min(number_of_exps, len(exp_list))
+    value_exps = [(exp, exp.get_best_metric_value(metric_name, mode)) for exp in exp_list]
+    reversed = True if mode == "max" else False
+    value_exps = sorted(value_exps, reverse=reversed, key=lambda x: x[1].value)
+    value_exps = value_exps[:number_of_exps]
+
+    return [(f"{exp.short_id} - {value.value:0.2f}", exp) for exp, value in value_exps]
 
 
 def generate_chart(source, metric):
@@ -71,6 +84,13 @@ visualized_metrics = list()
 for met in metric_set:
     if st.sidebar.checkbox(met, value=bool(met in default_metrics)):
         visualized_metrics.append(met)
+
+st.sidebar.markdown("Best Experiments")
+best_metric = st.sidebar.selectbox("Metric", options=list(metric_set))
+mode = st.sidebar.selectbox("Mode", options=['min', 'max'])
+best_exps = get_best_experiments(experiments, best_metric, mode, 3)
+for text, exp in best_exps:
+    st.sidebar.checkbox(text)
 
 st.sidebar.markdown("Found Experiments")
 checked_experiments = []

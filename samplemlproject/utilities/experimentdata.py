@@ -1,8 +1,10 @@
+from dataclasses import dataclass
 from os.path import join
 from typing import Tuple, List
 
 import yaml
 import pandas as pd
+import numpy as np
 
 from samplemlproject.config.envconfig import RUN_ID_KEY, SHORT_ID_KEY
 
@@ -16,6 +18,13 @@ def load_exp_info(exp_info_file) -> Tuple[str, str]:
 
 def load_loggings(logging_file: str) -> pd.DataFrame:
     return pd.read_csv(logging_file)
+
+
+@dataclass
+class MetricValue(object):
+    metric_name: str
+    value: float
+    epoch: int
 
 
 class ExperimentData(object):
@@ -40,10 +49,31 @@ class ExperimentData(object):
 
         return df
 
+    def get_best_metric_value(self, metric_name: str, mode) -> MetricValue:
+        """
+        Returns the best value of the given metric according to the mode.
+        :param metric_name: name of the metric
+        :param mode: either 'min' or 'max'
+        :return: MetricValue
+        """
+        series_epoch = self.log_data["epoch"]
+        series_metrics = self.log_data[metric_name]
+        if mode == "max":
+            idx = np.argmax(series_metrics)
+        elif mode == "min":
+            idx = np.argmin(series_metrics)
+        else:
+            raise Exception(f"Mode is neither 'max' nor 'min' but {mode}")
+
+        val = series_metrics[idx]
+        epoch = series_epoch[idx]
+        return MetricValue(metric_name=metric_name, value=val, epoch=epoch)
+
 
 if __name__ == '__main__':
     p = "/Users/djohn/Projects/01_general/01_repos/sample-ml-project/experiment_outputs/2020-04-28T12.43.31.264Z-id_njs3"
     exp = ExperimentData(p)
     df = exp.get_log_for_metric("val_accuracy")
+    mv = exp.get_best_metric_value("loss", "min")
 
 
