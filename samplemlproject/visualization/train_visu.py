@@ -1,113 +1,49 @@
-import os
-from typing import Dict, Any, List, Tuple
-import altair
+from typing import List
 
 import streamlit as st
-import pandas as pd
+
+from samplemlproject.utilities.chartutils import generate_chart
 from samplemlproject.utilities.experimentdata import ExperimentData
 
 # the default metrics are shown as true
+from samplemlproject.utilities.experimentmanager import ExperimentManager
+
+# Define your parameters
 default_metrics = ["val_accuracy"]
+folder: str = "experiment_outputs"
+number_of_preselected_exps: int = 2
+number_of_preselected_best_exps: int = 1
 
+exp: ExperimentData
+exp_manager = ExperimentManager(folder)
+metric_list: List[str] = exp_manager.get_metrics()
 
-def get_best_experiments(exp_list: List[ExperimentData],
-                         metric_name: str,
-                         mode: str,
-                         number_of_exps: int) -> List[Tuple[str, ExperimentData]]:
-    number_of_exps = min(number_of_exps, len(exp_list))
-    value_exps = [(exp, exp.get_best_metric_value(metric_name, mode)) for exp in exp_list]
-    reversed = True if mode == "max" else False
-    value_exps = sorted(value_exps, reverse=reversed, key=lambda x: x[1].value)
-    value_exps = value_exps[:number_of_exps]
-
-    return [(f"{exp.short_id} - {value.value:0.2f}", exp) for exp, value in value_exps]
-
-
-def generate_chart(source, metric):
-    # Create a selection that chooses the nearest point & selects based on x-value
-    nearest = altair.selection(type='single', nearest=True, on='mouseover',
-                            fields=['epoch'], empty='none')
-
-    line = altair.Chart(source).mark_line().encode(
-        x='epoch',
-        y=met,
-        color='name',
-    )
-
-    # Transparent selectors across the chart. This is what tells us
-    # the x-value of the cursor
-    selectors = altair.Chart(source).mark_point().encode(
-        x='epoch',
-        opacity=altair.value(0),
-    ).add_selection(
-        nearest
-    )
-
-    # Draw points on the line, and highlight based on selection
-    points = line.mark_point().encode(
-        opacity=altair.condition(nearest, altair.value(1), altair.value(0))
-    )
-
-    # Draw text labels near the points, and highlight based on selection
-    text = line.mark_text(align='left', dx=5, dy=-5).encode(
-        text=altair.condition(nearest, metric + ':Q', altair.value(' '))
-    )
-
-    # Draw a rule at the location of the selection
-    rules = altair.Chart(source).mark_rule(color='gray').encode(
-        x='epoch:Q',
-    ).transform_filter(
-        nearest
-    )
-
-    final = altair.layer(
-        line, selectors, points, rules, text
-    ).properties(
-        width=600, height=400
-    )
-
-    return final
-
-
-st.title("Monitor your trainings!")
-folder = "experiment_outputs"
-subfolders = [f.path for f in os.scandir(folder) if f.is_dir()]
-experiments = []
-metric_set = set()
-for sf in subfolders:
-    cur_exp = ExperimentData(sf)
-    metric_set.update(cur_exp.get_metrics())
-    experiments.append(cur_exp)
-
+# Built Sidebar
 st.sidebar.markdown("Visualized Metrics")
 visualized_metrics = list()
-for met in metric_set:
+for met in metric_list:
     if st.sidebar.checkbox(met, value=bool(met in default_metrics)):
         visualized_metrics.append(met)
 
 st.sidebar.markdown("Best Experiments")
-best_metric = st.sidebar.selectbox("Metric", options=list(metric_set))
+best_metric = st.sidebar.selectbox("Metric", options=list(metric_list))
 mode = st.sidebar.selectbox("Mode", options=['min', 'max'])
-best_exps = get_best_experiments(experiments, best_metric, mode, 3)
-for text, exp in best_exps:
-    st.sidebar.checkbox(text)
+best_exps = exp_manager.get_best_experiments(best_metric, mode, 3)
+checked_experiments = set()
+for idx, (text, exp) in enumerate(best_exps):
+    if st.sidebar.checkbox(text, value=idx < number_of_preselected_best_exps):
+        checked_experiments.add(exp.short_id)
 
 st.sidebar.markdown("Found Experiments")
-checked_experiments = []
-for exp in experiments:
-    if st.sidebar.checkbox(f"ID: {exp.short_id} - TS: {exp.run_id}", value=True):
-        checked_experiments.append(exp)
-exp: ExperimentData
-chart_log_dict: Dict[str, Any] = dict()
+
+for idx, exp in enumerate(exp_manager.get_experiments()):
+    if st.sidebar.checkbox(f"ID: {exp.short_id} - TS: {exp.run_id}", value=idx < number_of_preselected_exps):
+        checked_experiments.add(exp.short_id)
+
+# Visualize in the center
 for met in visualized_metrics:
-    for exp in checked_experiments:
-        if met not in chart_log_dict:
-            chart_log_dict[met] = exp.get_log_for_metric(met)
-        else:
-            chart_log_dict[met] = pd.concat([chart_log_dict[met], exp.get_log_for_metric(met)])
-    if met not in chart_log_dict:
-        continue
-    chart_data = generate_chart(chart_log_dict[met], met)
+    cur_df = exp_manager.get_visu_df(met, list(checked_experiments))
+    chart_data = generate_chart(cur_df, met)
     st.write(chart_data)
 
 
