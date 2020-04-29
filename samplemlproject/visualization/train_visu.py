@@ -13,6 +13,7 @@ default_metrics = ["val_accuracy"]
 folder: str = "experiment_outputs"
 number_of_preselected_exps: int = 2
 number_of_preselected_best_exps: int = 1
+number_of_best_exps_shown: int = 3
 
 exp: ExperimentData
 exp_manager = ExperimentManager(folder)
@@ -28,7 +29,7 @@ for met in metric_list:
 st.sidebar.markdown("Best Experiments")
 best_metric = st.sidebar.selectbox("Metric", options=list(metric_list))
 mode = st.sidebar.selectbox("Mode", options=['min', 'max'])
-best_exps = exp_manager.get_best_experiments(best_metric, mode, 3)
+best_exps = exp_manager.get_best_experiments(best_metric, mode, number_of_best_exps_shown)
 checked_experiments = set()
 for idx, (text, exp) in enumerate(best_exps):
     if st.sidebar.checkbox(text, value=idx < number_of_preselected_best_exps):
