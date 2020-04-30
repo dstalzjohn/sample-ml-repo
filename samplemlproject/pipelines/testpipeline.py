@@ -2,6 +2,7 @@ from kedro.pipeline import Pipeline, node
 
 from samplemlproject.procedures.defaulttest import defaulttest_node
 from samplemlproject.utilities.experimentmanager import get_exp_data_node
+from samplemlproject.utilities.metricutils import cal_pred_metrics, cal_pred_metrics_node, save_metrics_node
 from samplemlproject.utilities.predictionutils import save_predictions_node
 
 
@@ -26,10 +27,24 @@ def create_pipeline():
         outputs=dict(),
     )
 
+    metric_node = node(
+        cal_pred_metrics_node,
+        inputs=dict(predictions="predictions"),
+        outputs=dict(metrics="metrics"),
+    )
+
+    metric_save_node = node(
+        save_metrics_node,
+        inputs=dict(metric="metrics", store_path="exp_path", yaml_filename="params:metric_yaml_file"),
+        outputs=dict(),
+    )
+
     return Pipeline(
         [
             exp_node,
             test_node,
             save_node,
+            metric_node,
+            metric_save_node,
         ]
     )

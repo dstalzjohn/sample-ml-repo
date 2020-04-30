@@ -35,6 +35,7 @@ input_shape: [100, 100, 3]
 
 parq_pred_filename: predictions.parq
 yaml_pred_filename: predictions.yml
+metric_yaml_file: metrics_test.yml
 
 ### TESTING
 

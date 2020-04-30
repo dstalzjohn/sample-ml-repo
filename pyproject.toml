@@ -17,6 +17,7 @@ pillow = "^7.1.1"
 streamlit = "^0.58.0"
 altair = "^4.1.0"
 fastparquet = "^0.3.3"
+sklearn = "^0.0"
 
 
 [tool.poetry.dev-dependencies]

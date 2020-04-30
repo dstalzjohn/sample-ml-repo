@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from os.path import join
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Tuple
 
 import fastparquet
 import numpy as np
@@ -53,6 +53,20 @@ class Predictions(object):
         df = pd.DataFrame(df_list)
         return df
 
+    def get_class_and_pred_idxs(self) -> Tuple[np.ndarray, np.ndarray]:
+        cur_df = self.get_df_data()
+        target_idxs = np.round(cur_df["class_idx"])
+        pred_cols = sorted([c for c in cur_df.columns if c.startswith("pred_")])
+
+        if len(pred_cols) == 1:
+            pred_idxs = np.round(cur_df["pred_0000"])
+        elif len(pred_cols) > 1:
+            pred_idxs = cur_df[pred_cols].idxmax(axis=1)
+            pred_idxs = pred_idxs.apply(lambda x: int(x[5:]))
+        else:
+            raise Exception("No prediction column available!")
+        return target_idxs, pred_idxs
+
     def save_df(self, filepath: str):
         fastparquet.write(filepath, self.get_df_data())
 
@@ -67,7 +81,7 @@ def prediction_factory(preds: List[Any],
                        classes: List[int],
                        class_indices: Dict[str, int]) -> Predictions:
     pred_list = list()
-    rev_class_idxs = {v:k for k,v in class_indices.items()}
+    rev_class_idxs = {v: k for k, v in class_indices.items()}
     for pred, filename, cl in zip(preds, filenames, classes):
         pred_list.append(PredictionContainer(filename=filename,
                                              class_idx=cl,
