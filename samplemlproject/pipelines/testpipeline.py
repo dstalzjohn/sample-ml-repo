@@ -39,12 +39,14 @@ def create_pipeline():
         outputs=dict(),
     )
 
-    return Pipeline(
-        [
+    test_node_list = [
             exp_node,
             test_node,
             save_node,
             metric_node,
             metric_save_node,
         ]
+
+    return Pipeline(
+        test_node_list
     )
