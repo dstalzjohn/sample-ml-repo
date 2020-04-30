@@ -1,5 +1,5 @@
 
-fruit_data_train:
+data_train:
   type: &datasetclass samplemlproject.datasets.imageflowdataset.ImageFlowDataset
   filepath: &datapath /Users/djohn/Projects/01_general/04_engineering_data/fruits-360_dataset/fruits-360
   classes: &classes
@@ -9,8 +9,9 @@ fruit_data_train:
   rescale: &rescale 0.00392156862745098 # 1/255.
   target_size: &target_size [100, 100]
   batch_size: 16
+  shuffle: true
 
-fruit_data_test:
+data_validation:
   type: *datasetclass
   filepath: *datapath
   classes: *classes
@@ -18,5 +19,16 @@ fruit_data_test:
   rescale: *rescale
   target_size: *target_size
   batch_size: 16
+  shuffle: false
+
+data_test:
+  type: *datasetclass
+  filepath: *datapath
+  classes: *classes
+  sub_dir: Test
+  rescale: *rescale
+  target_size: *target_size
+  batch_size: 16
+  shuffle: false
 
 

@@ -1,7 +1,16 @@
 import os
-from typing import List, Tuple, Set
+from typing import List, Tuple, Set, Dict
 import pandas as pd
 from samplemlproject.utilities.experimentdata import ExperimentData
+
+
+def get_exp_data_node(exp_output_folder: str, exp_id: str) -> Dict[str, ExperimentData]:
+    return dict(experiment=get_exp_data(exp_output_folder, exp_id))
+
+
+def get_exp_data(exp_output_folder: str, exp_id: str):
+    exp_manager = ExperimentManager(exp_output_folder)
+    return exp_manager.get_exp_by_id(exp_id)
 
 
 class ExperimentManager(object):
@@ -37,7 +46,11 @@ class ExperimentManager(object):
         return sorted(self.experiments, reverse=True, key=lambda x: x.run_id)
 
     def get_exp_by_id(self, exp_id: str) -> ExperimentData:
-        return self.exp_dict[exp_id]
+        if exp_id.lower() == "latest":
+            ret_exp = sorted(self.experiments, reverse=True, key=lambda x: x.run_id)[0]
+        else:
+            ret_exp = self.exp_dict[exp_id]
+        return ret_exp
 
     def get_visu_df(self, metric_name: str, exp_id_list: List[str]) -> pd.DataFrame:
         df = None

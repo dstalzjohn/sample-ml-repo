@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass
 from os.path import join
 from typing import Tuple, List
@@ -8,6 +9,9 @@ import numpy as np
 
 from samplemlproject.config.envconfig import RUN_ID_KEY, SHORT_ID_KEY
 
+
+class ModelNotFound(Exception):
+    pass
 
 def load_exp_info(exp_info_file) -> Tuple[str, str]:
     with open(exp_info_file, "r") as f:
@@ -29,12 +33,15 @@ class MetricValue(object):
 
 class ExperimentData(object):
 
-    def __init__(self, filepath: str, project_info_file="project_info.yml", train_log_file="train_logs.csv"):
+    def __init__(self, filepath: str, project_info_file="project_info.yml", train_log_file="train_logs.csv",
+                 model_subfolder: str="models", epoch_formatting: str = "ep{epoch:03d}"):
         self.filepath = filepath
         self.project_info_file = project_info_file
         self.train_log_file = train_log_file
         self.run_id, self.short_id = load_exp_info(join(self.filepath, self.project_info_file))
         self.log_data: pd.DataFrame = load_loggings(join(self.filepath, self.train_log_file))
+        self.model_subfolder: str = model_subfolder
+        self.epoch_formatting: str = epoch_formatting
 
     def get_metrics(self) -> List[str]:
         metrics = list(self.log_data.columns)
@@ -68,6 +75,31 @@ class ExperimentData(object):
         val = series_metrics[idx]
         epoch = series_epoch[idx]
         return MetricValue(metric_name=metric_name, value=val, epoch=epoch)
+
+    def get_model_path(self, epoch: int = None) -> str:
+        """
+        Get the model path for the desired model.
+        :param epoch: epoch as int if not given the latest is returned
+        """
+        model_path = join(self.filepath, self.model_subfolder)
+        model_files: List[str] = sorted([f.path for f in os.scandir(model_path) if f.is_file()])
+        ret_model = None
+        if len(model_files) == 0:
+            raise ModelNotFound(f"No model found for this experiment: {self.short_id}")
+
+        if epoch is None:
+            ret_model = model_files[-1]
+        else:
+            ep_str = self.epoch_formatting.format(epoch)
+            for mf in model_files:
+                if ep_str in mf:
+                    ret_model = mf
+
+        if ret_model is None:
+            raise ModelNotFound(f"Model from epoch: {epoch} not found in exp: {self.short_id}")
+
+        return ret_model
+
 
 
 if __name__ == '__main__':

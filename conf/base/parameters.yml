@@ -1,4 +1,6 @@
 
+### TRAINING
+
 # Number of training epochs
 epochs: 10
 
@@ -9,7 +11,7 @@ callbacks:
   # Stores the model after each epoch
   - type: samplemlproject.callbacks.callback_factories.model_callback_factory
     params:
-      filepath: experiment_outputs/$RUN_ID-id_$SHORT_ID/models/$SHORT_ID-model-ep{epoch:03d}.hdf5
+      filepath: experiment_outputs/$RUN_ID-id_$SHORT_ID/models/model-id_$SHORT_ID-ep{epoch:03d}.hdf5
   # This callback saves the git version of the given dirs and modules (a commit is required before the run)
   # and stores some other project relevant information (e.g. logging the training process)
   - type: samplemlproject.callbacks.callback_factories.ccmlproject_callback_factory
@@ -28,4 +30,11 @@ optimizer:
 n_classes: 1
 # input_shape for building the model
 input_shape: [100, 100, 3]
+
+### TESTING
+
+# Use either latest or SHORT_ID (e.g. jk3l) for finding the latest experiment
+test_exp: latest
+exp_output_folder: experiment_outputs
+
 

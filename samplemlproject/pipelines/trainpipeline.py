@@ -37,8 +37,8 @@ def create_pipeline():
         fit_generator,
         inputs=dict(epochs="params:epochs",
                     model="compiled_model",
-                    train_set="fruit_data_train",
-                    validation_set="fruit_data_test",
+                    train_set="data_train",
+                    validation_set="data_validation",
                     callbacks="init_callbacks"),
         outputs=dict(history="history", model="final_model")
     )

@@ -10,6 +10,7 @@ def get_image_flow_directory_generator(filepath: str,
                                        target_size: Optional[Tuple[int, int]] = None,
                                        rescale: Optional[float] = None,
                                        classes: Optional[List[str]] = None,
+                                       shuffle: bool = False,
                                        ) -> Dict:
     """
     Creates an image dataset for training or testing
@@ -19,6 +20,7 @@ def get_image_flow_directory_generator(filepath: str,
     :param target_size: when given the images are scaled to the given size
     :param rescale: scale value for each pixel (e.g. 1/255.)
     :param classes: List of classes which should be used (folder names), if not given, everything is used
+    :param shuffle: defines whether the input data is shuffled or not
     :return:
     """
     image_generator = keras_image.ImageDataGenerator(rescale=rescale)
@@ -33,6 +35,7 @@ def get_image_flow_directory_generator(filepath: str,
                                                     target_size=target_size,
                                                     batch_size=batch_size,
                                                     class_mode=class_mode,
-                                                    classes=classes)
+                                                    classes=classes,
+                                                    shuffle=shuffle)
 
     return image_set
