@@ -1,11 +1,15 @@
 import os
+from os.path import dirname
 from typing import List, Tuple, Set, Dict
 import pandas as pd
 from samplemlproject.utilities.experimentdata import ExperimentData
 
 
 def get_exp_data_node(exp_output_folder: str, exp_id: str) -> Dict[str, ExperimentData]:
-    return dict(experiment=get_exp_data(exp_output_folder, exp_id))
+    exp_output_folder = dirname(exp_output_folder)
+    exp_data = get_exp_data(exp_output_folder, exp_id)
+    return dict(experiment=exp_data,
+                exp_path=exp_data.get_store_path())
 
 
 def get_exp_data(exp_output_folder: str, exp_id: str):

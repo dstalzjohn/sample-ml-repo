@@ -43,6 +43,9 @@ class ExperimentData(object):
         self.model_subfolder: str = model_subfolder
         self.epoch_formatting: str = epoch_formatting
 
+    def get_store_path(self) -> str:
+        return self.filepath
+
     def get_metrics(self) -> List[str]:
         metrics = list(self.log_data.columns)
         metrics.remove("epoch")

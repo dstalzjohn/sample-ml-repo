@@ -1,3 +1,4 @@
+from os.path import join
 from pathlib import Path
 
 from keras.callbacks.callbacks import ModelCheckpoint, CSVLogger
@@ -14,7 +15,8 @@ def subs_path_and_create_folder(filepath: str) -> str:
     return filepath
 
 
-def model_callback_factory(filepath: str, *args, **kwargs):
+def model_callback_factory(exp_path: str, model_subfolder: str, *args, **kwargs):
+    filepath = join(exp_path, model_subfolder)
     filepath = subs_path_and_create_folder(filepath)
     return ModelCheckpoint(filepath=filepath, *args, **kwargs)
 
