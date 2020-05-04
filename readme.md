@@ -41,6 +41,8 @@ Advantages:
 ## Points of entry
 
 - You can define your own pipeline in ```pipeline.py```
+- Your datasets can set in ```catalog.yml```
+- Define your own analysis like in ```train_visu.py```
 
 
 ## Technologies
