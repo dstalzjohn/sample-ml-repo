@@ -6,7 +6,7 @@ from samplemlproject.procedures.defaulttrain import fit_generator
 from samplemlproject.utilities.factoryutils import class_or_func_creation_node
 
 
-def create_pipeline():
+def get_train_nodes():
 
     model_node = node(
         get_simple_model,
@@ -43,12 +43,19 @@ def create_pipeline():
         outputs=dict(history="history", model="final_model")
     )
 
-    return Pipeline(
-        [
+    return [
             model_node,
             optimizer_node,
             compile_node,
             callback_node,
             train_node
         ]
+
+
+def create_pipeline():
+
+    train_node_list = get_train_nodes()
+
+    return Pipeline(
+        train_node_list
     )

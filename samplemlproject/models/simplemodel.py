@@ -9,7 +9,7 @@ from keras.layers import Dense
 from keras.optimizers import Optimizer, RMSprop
 
 
-def get_simple_model(input_shape: Tuple, output_classes: int) -> dict:
+def get_simple_model(input_shape: Tuple, output_classes: int, *args, **kwargs) -> dict:
     model = Sequential()
 
     # first hidden layer

@@ -2,7 +2,7 @@
 ### TRAINING
 
 # Number of training epochs
-epochs: 10
+epochs: 2
 experiment_path: &experiment_path experiment_outputs/$RUN_ID-id_$SHORT_ID
 
 # Callbacks used for training
@@ -36,6 +36,8 @@ input_shape: [100, 100, 3]
 parq_pred_filename: predictions.parq
 yaml_pred_filename: predictions.yml
 metric_yaml_file: metrics_test.yml
+test_pipeline_name: testpipeline
+train_pipeline_name: trainpipeline
 
 ### TESTING
 
