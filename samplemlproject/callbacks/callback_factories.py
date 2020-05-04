@@ -4,7 +4,7 @@ from keras.callbacks.callbacks import ModelCheckpoint, CSVLogger
 
 from samplemlproject.callbacks.ccmlprojectcallback import CCMLProjectCallback
 from samplemlproject.callbacks.gitversioncallback import GitVersionCallback
-from samplemlproject.utilities.factoryutils import subs_path_and_create_folder
+from ccmlutils.utilities.factoryutils import subs_path_and_create_folder
 
 
 def model_callback_factory(exp_path: str, model_subfolder: str, *args, **kwargs):

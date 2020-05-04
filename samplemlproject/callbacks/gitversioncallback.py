@@ -2,7 +2,7 @@ from typing import List
 
 from keras.callbacks import Callback
 
-from samplemlproject.utilities.gitutils import get_git_revision_hash, get_git_revision_of_module, NoGitHashAvailable
+from ccmlutils.utilities.gitutils import get_git_revision_hash, get_git_revision_of_module, NoGitHashAvailable
 import yaml
 
 

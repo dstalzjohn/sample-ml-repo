@@ -1,7 +1,5 @@
 from os import getenv, environ
 
-from samplemlproject.utilities.hashutils import generate_short_id
-
 RUN_ID_KEY = "RUN_ID"
 SHORT_ID_KEY = "SHORT_ID"
 PIPELINE_KEY = "PIPELINE"

@@ -2,11 +2,11 @@ from typing import List
 
 import streamlit as st
 
-from samplemlproject.utilities.chartutils import generate_chart
-from samplemlproject.utilities.experimentdata import ExperimentData
+from ccmlutils.utilities import generate_chart
+from ccmlutils.utilities.experimentdata import ExperimentData
 
 # the default metrics are shown as true
-from samplemlproject.utilities.experimentmanager import ExperimentManager
+from ccmlutils.utilities.experimentmanager import ExperimentManager
 
 # Define your parameters
 default_metrics = ["val_accuracy"]

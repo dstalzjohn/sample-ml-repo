@@ -1,6 +1,6 @@
 from typing import List, Any
 
-from samplemlproject.utilities.factoryutils import class_or_func_creation
+from ccmlutils.utilities.factoryutils import class_or_func_creation
 
 
 def create_callbacks(input_list: List[dict]) -> List[Any]:

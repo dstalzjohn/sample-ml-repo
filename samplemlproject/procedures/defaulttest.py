@@ -2,9 +2,9 @@ from typing import Dict
 
 from keras.models import load_model, Model
 
-from samplemlproject.utilities.experimentdata import ExperimentData
+from ccmlutils.utilities.experimentdata import ExperimentData
 
-from samplemlproject.utilities.predictionutils import Predictions, prediction_factory
+from ccmlutils.utilities.predictionutils import Predictions, prediction_factory
 
 
 def defaulttest(test_set, experiment: ExperimentData) -> Predictions:
