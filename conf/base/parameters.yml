@@ -39,6 +39,9 @@ metric_yaml_file: metrics_test.yml
 test_pipeline_name: testpipeline
 train_pipeline_name: trainpipeline
 
+# Only used for establishing connection between nodes
+dummy_arg: ""
+
 ### TESTING
 
 # Use either latest or SHORT_ID (e.g. jk3l) for finding the latest experiment

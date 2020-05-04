@@ -37,12 +37,16 @@ from kedro.pipeline import Pipeline
 from samplemlproject.config.envconfig import RUN_ID_KEY, SHORT_ID_KEY
 from samplemlproject.pipeline import create_pipelines
 from samplemlproject.utilities.hashutils import generate_short_id
+from samplemlproject.utilities.timeutils import generate_timestamp
 
 
 class ProjectContext(KedroContext):
     """Users can override the remaining methods from the parent class here,
     or create new ones (e.g. as required by plugins)
     """
+    def _get_save_version(self):
+        # This is a version where no UTC is given in order to support other regions
+        return generate_timestamp()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

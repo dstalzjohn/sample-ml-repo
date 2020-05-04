@@ -2,14 +2,14 @@ from kedro.pipeline import Pipeline, node
 
 from samplemlproject.procedures.defaulttest import defaulttest_node
 from samplemlproject.utilities.experimentmanager import get_exp_data_node
-from samplemlproject.utilities.metricutils import cal_pred_metrics, cal_pred_metrics_node, save_metrics_node
+from samplemlproject.utilities.metricutils import cal_pred_metrics_node, save_metrics_node
 from samplemlproject.utilities.predictionutils import save_predictions_node
 
 
 def get_test_nodes(exp_id_var: str = None, connection_arg: str = None):
     exp_node = node(
         get_exp_data_node,
-        inputs=dict(exp_output_folder="params:experiment_path", exp_id=exp_id_var),
+        inputs=dict(exp_output_folder="params:experiment_path", exp_id=exp_id_var, connection_arg=connection_arg),
         outputs=dict(experiment="experiment", exp_path="exp_path"),
     )
 
@@ -48,9 +48,10 @@ def get_test_nodes(exp_id_var: str = None, connection_arg: str = None):
 
     return test_node_list
 
+
 def create_pipeline():
 
-    test_node_list = get_test_nodes(exp_id_var="params:test_exp")
+    test_node_list = get_test_nodes(exp_id_var="params:test_exp", connection_arg="params:dummy_arg")
     return Pipeline(
         test_node_list
     )

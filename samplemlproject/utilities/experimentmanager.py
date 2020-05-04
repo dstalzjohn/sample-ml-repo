@@ -3,13 +3,13 @@ from os.path import dirname
 from typing import List, Tuple, Set, Dict
 import pandas as pd
 
-from samplemlproject.config.envconfig import get_short_id, get_pipeline_name, set_pipeline_name
+from samplemlproject.config.envconfig import get_short_id
 from samplemlproject.utilities.experimentdata import ExperimentData
 
 
-def get_exp_data_node(exp_output_folder: str, exp_id: str = None) -> Dict[str, ExperimentData]:
+def get_exp_data_node(exp_output_folder: str, exp_id: str, *args, **kwargs) -> Dict[str, ExperimentData]:
     exp_output_folder = dirname(exp_output_folder)
-    if exp_id is None:
+    if exp_id == "":
         exp_id = get_short_id()
     exp_data = get_exp_data(exp_output_folder, exp_id)
     return dict(experiment=exp_data,
