@@ -28,7 +28,8 @@ class ProjectContext(KedroContext):
         os.environ[SHORT_ID_KEY] = self._local_short_id
 
     project_name = "samplemlproject"
-    project_version = "0.0.1"
+    # Here the kedro sample version is used
+    project_version = "0.15.9"
 
     def _get_run_id(
         self, *args, **kwargs  # pylint: disable=unused-argument
