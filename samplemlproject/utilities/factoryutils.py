@@ -1,5 +1,8 @@
+from pathlib import Path
 from typing import Dict, Any, Optional
 from importlib import import_module
+
+from samplemlproject.config.envconfig import replace_id_keys
 
 
 class ImportException(Exception):
@@ -38,3 +41,10 @@ def class_or_func_creation(input_dict: Optional[dict] = None) -> Any:
         init_class = imported_type
 
     return init_class
+
+
+def subs_path_and_create_folder(filepath: str) -> str:
+    filepath = replace_id_keys(filepath)
+    p = Path(filepath)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    return filepath

@@ -7,7 +7,7 @@ import yaml
 
 from sklearn.metrics import accuracy_score, confusion_matrix
 
-from samplemlproject.callbacks.callback_factories import subs_path_and_create_folder
+from samplemlproject.utilities.factoryutils import subs_path_and_create_folder
 from samplemlproject.utilities.predictionutils import Predictions
 
 
@@ -24,7 +24,7 @@ class Metrics(object):
 
 def load_metrics(filepath: str) -> Metrics:
     with open(filepath, "r") as f:
-        data = yaml.load(f)
+        data = yaml.load(f, Loader=yaml.SafeLoader)
 
     return Metrics(accuracy=data["accuracy"],
                    confusion_mat=np.array(data["confusion_mat"]))
