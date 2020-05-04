@@ -2,7 +2,7 @@ from typing import List
 
 import streamlit as st
 
-from ccmlutils.utilities import generate_chart
+from ccmlutils.utilities.chartutils import generate_chart
 from ccmlutils.utilities.experimentdata import ExperimentData
 
 # the default metrics are shown as true
