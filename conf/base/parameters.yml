@@ -4,6 +4,7 @@
 # Number of training epochs
 epochs: 2
 experiment_path: &experiment_path experiment_outputs/$RUN_ID-id_$SHORT_ID
+project_package_name: &project_package_name samplemlproject
 
 # Callbacks used for training
 # $RUN_ID is replaced with a timestring
@@ -19,7 +20,9 @@ callbacks:
   - type: ccmlutils.callbacks.callback_factories.ccmlproject_callback_factory
     params:
       filepath: *experiment_path
-      git_modules: samplemlproject
+      git_modules:
+      - *project_package_name
+      - ccmlutils
 
 # Optimizer is used in the experiment
 optimizer:

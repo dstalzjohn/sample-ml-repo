@@ -1,7 +1,7 @@
 
 data_train:
   type: &datasetclass ccmlutils.datasets.imageflowdataset.ImageFlowDataset
-  filepath: &datapath /Users/djohn/Projects/01_general/04_engineering_data/fruits-360_dataset/fruits-360
+  filepath: &datapath /path/to/fruits-360_dataset/fruits-360
   classes: &classes
     - Avocado
     - Banana
