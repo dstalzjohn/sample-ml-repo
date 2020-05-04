@@ -34,7 +34,7 @@ import os
 from kedro.context import KedroContext, load_context
 from kedro.pipeline import Pipeline
 
-from samplemlproject.config.envconfig import RUN_ID_KEY, SHORT_ID_KEY
+from ccmlutils.config.envconfig import RUN_ID_KEY, SHORT_ID_KEY
 from samplemlproject.pipeline import create_pipelines
 from ccmlutils.utilities.hashutils import generate_short_id
 from ccmlutils.utilities.timeutils import generate_timestamp

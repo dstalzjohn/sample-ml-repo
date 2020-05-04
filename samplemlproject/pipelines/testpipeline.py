@@ -1,6 +1,6 @@
 from kedro.pipeline import Pipeline, node
 
-from samplemlproject.procedures.defaulttest import defaulttest_node
+from ccmlutils.procedures.defaulttest import defaulttest_node
 from ccmlutils.utilities.experimentmanager import get_exp_data_node
 from ccmlutils.utilities.metricutils import cal_pred_metrics_node, save_metrics_node
 from ccmlutils.utilities.predictionutils import save_predictions_node

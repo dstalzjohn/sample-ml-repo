@@ -1,9 +1,9 @@
 from kedro.pipeline import Pipeline, node
 
-from samplemlproject.callbacks.createcallbacks import create_callbacks_node
+from ccmlutils.callbacks.createcallbacks import create_callbacks_node
+from ccmlutils.procedures.defaulttrain import fit_generator
 from samplemlproject.models.simplemodel import get_simple_model, compile_model
 from samplemlproject.pipelines.testpipeline import get_test_nodes
-from samplemlproject.procedures.defaulttrain import fit_generator
 from ccmlutils.utilities.factoryutils import class_or_func_creation_node
 
 

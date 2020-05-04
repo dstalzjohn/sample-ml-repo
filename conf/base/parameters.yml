@@ -10,13 +10,13 @@ experiment_path: &experiment_path experiment_outputs/$RUN_ID-id_$SHORT_ID
 # $SHORT_ID is a alphanumeric hash value of the $RUN_ID (easier to remember and search for)
 callbacks:
   # Stores the model after each epoch
-  - type: samplemlproject.callbacks.callback_factories.model_callback_factory
+  - type: ccmlutils.callbacks.callback_factories.model_callback_factory
     params:
       exp_path: *experiment_path
       model_subfolder: models/model-id_$SHORT_ID-ep{epoch:03d}.hdf5
   # This callback saves the git version of the given dirs and modules (a commit is required before the run)
   # and stores some other project relevant information (e.g. logging the training process)
-  - type: samplemlproject.callbacks.callback_factories.ccmlproject_callback_factory
+  - type: ccmlutils.callbacks.callback_factories.ccmlproject_callback_factory
     params:
       filepath: *experiment_path
       git_modules: samplemlproject
