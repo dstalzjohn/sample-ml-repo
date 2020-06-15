@@ -30,7 +30,7 @@ class ProjectContext(KedroContext):
         exp_name, should_commit = get_and_ask_for_exp_name()
         exp_name = exp_name if len(exp_name) > 0 else "DEBUG-EXPERIMENT"
         if should_commit:
-            fast_commit(["conf/base", "sample-ml-project"], "EXP-COMMIT: " + exp_name)
+            fast_commit(["conf/base", "samplemlproject"], "EXP-COMMIT: " + exp_name)
 
     project_name = "samplemlproject"
     # Here the kedro sample version is used
