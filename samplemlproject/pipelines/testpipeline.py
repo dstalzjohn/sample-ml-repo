@@ -19,10 +19,16 @@ def get_test_nodes(exp_id_var: str = None, connection_arg: str = None):
         outputs=dict(predictions="predictions"),
     )
 
+    set_name_node = node(
+        lambda: dict(set_name="test"),
+        inputs=dict(),
+        outputs=dict(set_name="set_name")
+    )
+
     save_node = node(
         save_predictions_node,
         inputs=dict(predictions="predictions", store_path="exp_path",
-                    parq_filename="params:parq_pred_filename", yml_filename="params:yaml_pred_filename"),
+                    filename="params:pred_filename", set_name="set_name"),
         outputs=dict(),
     )
 
@@ -44,6 +50,7 @@ def get_test_nodes(exp_id_var: str = None, connection_arg: str = None):
         save_node,
         metric_node,
         metric_save_node,
+        set_name_node,
     ]
 
     return test_node_list

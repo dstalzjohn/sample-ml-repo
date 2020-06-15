@@ -4,7 +4,7 @@ from ccmlutils.callbacks.createcallbacks import create_callbacks_node
 from ccmlutils.procedures.defaulttrain import fit_generator
 from samplemlproject.models.simplemodel import get_simple_model, compile_model
 from samplemlproject.pipelines.testpipeline import get_test_nodes
-from ccmlutils.utilities.factoryutils import class_or_func_creation_node
+from ccmlutils.utilities.factoryutils import init_object
 
 
 def get_train_nodes():
@@ -16,17 +16,17 @@ def get_train_nodes():
     )
 
     optimizer_node = node(
-        class_or_func_creation_node,
+        init_object,
         inputs=["params:optimizer"],
-        outputs={"class": "optimizer"}
+        outputs="optimizer",
     )
 
-    compile_node = node(
-        compile_model,
-        inputs=dict(model="model", output_classes_count="params:n_classes",
-                    optimizer="optimizer"),
-        outputs=dict(compiled_model="compiled_model"),
-    )
+    # compile_node = node(
+    #     compile_model,
+    #     inputs=dict(model="model", output_classes_count="params:n_classes",
+    #                 optimizer="optimizer"),
+    #     outputs=dict(compiled_model="compiled_model"),
+    # )
 
     callback_node = node(
         create_callbacks_node,
@@ -37,17 +37,18 @@ def get_train_nodes():
     train_node = node(
         fit_generator,
         inputs=dict(epochs="params:epochs",
-                    model="compiled_model",
+                    model="model",
+                    optimizer="optimizer",
                     train_set="data_train",
                     validation_set="data_validation",
-                    callbacks="init_callbacks"),
+                    callbacks="init_callbacks",
+                    loss="params:loss"),
         outputs=dict(history="history", model="final_model")
     )
 
     return [
             model_node,
             optimizer_node,
-            compile_node,
             callback_node,
             train_node
         ]

@@ -6,7 +6,8 @@ import os
 from kedro.context import KedroContext, load_context
 from kedro.pipeline import Pipeline
 
-from ccmlutils.config.envconfig import RUN_ID_KEY, SHORT_ID_KEY
+from ccmlutils.config.envconfig import RUN_ID_KEY, SHORT_ID_KEY, get_and_ask_for_exp_name
+from ccmlutils.utilities.gitutils import fast_commit
 from samplemlproject.pipeline import create_pipelines
 from ccmlutils.utilities.hashutils import generate_short_id
 from ccmlutils.utilities.timeutils import generate_timestamp
@@ -26,6 +27,10 @@ class ProjectContext(KedroContext):
         self._local_short_id = generate_short_id(self._local_run_id)
         os.environ[RUN_ID_KEY] = self._local_run_id
         os.environ[SHORT_ID_KEY] = self._local_short_id
+        exp_name, should_commit = get_and_ask_for_exp_name()
+        exp_name = exp_name if len(exp_name) > 0 else "DEBUG-EXPERIMENT"
+        if should_commit:
+            fast_commit(["conf/base", "sample-ml-project"], "EXP-COMMIT: " + exp_name)
 
     project_name = "samplemlproject"
     # Here the kedro sample version is used

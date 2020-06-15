@@ -1086,27 +1086,6 @@ semver = ">=2.0.0,<3.0.0"
 
 [[package]]
 category = "main"
-description = "Deep Learning for humans"
-name = "keras"
-optional = false
-python-versions = "*"
-version = "2.3.1"
-
-[package.dependencies]
-h5py = "*"
-keras-applications = ">=1.0.6"
-keras-preprocessing = ">=1.0.5"
-numpy = ">=1.9.1"
-pyyaml = "*"
-scipy = ">=0.14"
-six = ">=1.9.0"
-
-[package.extras]
-tests = ["pytest", "pytest-pep8", "pytest-xdist", "flaky", "pytest-cov", "pandas", "requests", "markdown"]
-visualize = ["pydot (>=1.2.4)"]
-
-[[package]]
-category = "main"
 description = "Reference implementations of popular deep learning models"
 name = "keras-applications"
 optional = false
@@ -2429,7 +2408,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "a3ede2bff056dd15d9690a8b71aad800f1d2fb6793219a4e42dd6a2449ef4b13"
+content-hash = "eb347d3ac2446606297ae4f1bcfcb75a497d369a1e8875b3c884df3ac8ff00b3"
 python-versions = "3.7"
 
 [metadata.files]
@@ -2849,10 +2828,6 @@ kedro-viz = [
     {file = "kedro-viz-3.2.0.tar.gz", hash = "sha256:7fa61f6324922b3bcd0aa8f79d498fde71c5b3f16030b973e10bf2ee7718cefd"},
     {file = "kedro_viz-3.2.0-py3-none-any.whl", hash = "sha256:73071af0cbe51833e339884eb32f2f9fc5ce3262f3d406ceb303f128a595219c"},
     {file = "kedro_viz-3.2.0-py3.6.egg", hash = "sha256:be67fbb4ed0a8e5920e90816f4c3123a280ca01efe9679a3d92da79c31338e18"},
-]
-keras = [
-    {file = "Keras-2.3.1-py2.py3-none-any.whl", hash = "sha256:d08a57bd63546175f8f19232ba05906514d419da3e0af8ef7437fa1c11442e20"},
-    {file = "Keras-2.3.1.tar.gz", hash = "sha256:321d43772006a25a1d58eea17401ef2a34d388b588c9f7646c34796151ebc8cc"},
 ]
 keras-applications = [
     {file = "Keras_Applications-1.0.8-py3-none-any.whl", hash = "sha256:df4323692b8c1174af821bf906f1e442e63fa7589bf0f1230a0b6bdc5a810c95"},

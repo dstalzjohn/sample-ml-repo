@@ -26,21 +26,22 @@ callbacks:
 
 # Optimizer is used in the experiment
 optimizer:
-  type: keras.optimizers.RMSprop
+  type: tensorflow.keras.optimizers.RMSprop
   params:
     lr: 0.0001
     decay: 0.000001
 
 # With n_classes = 1 the binary crossentropy is used. Otherwise use the same number of classes as in your dataset
 n_classes: 1
+loss: binary_crossentropy
+# loss: categorical_crossentropy
 # input_shape for building the model
 input_shape: [100, 100, 3]
 
-parq_pred_filename: predictions.parq
-yaml_pred_filename: predictions.yml
 metric_yaml_file: metrics_test.yml
 test_pipeline_name: testpipeline
 train_pipeline_name: trainpipeline
+pred_filename: predictions
 
 # Only used for establishing connection between nodes
 dummy_arg: ""
