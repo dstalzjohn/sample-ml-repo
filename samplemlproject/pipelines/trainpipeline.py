@@ -43,7 +43,7 @@ def get_train_nodes():
                     validation_set="data_validation",
                     callbacks="init_callbacks",
                     loss="params:loss"),
-        outputs=dict(history="history", model="final_model")
+        outputs=dict(history="history")
     )
 
     return [
