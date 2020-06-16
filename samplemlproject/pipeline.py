@@ -33,7 +33,6 @@ from typing import Dict
 from kedro.pipeline import Pipeline
 
 
-
 ###########################################################################
 # Here you can find an example pipeline, made of two modular pipelines.
 #
@@ -62,4 +61,3 @@ def create_pipelines() -> Dict[str, Pipeline]:
         "test": test_pl,
         "__default__": train_pl,
     }
-

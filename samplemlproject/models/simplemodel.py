@@ -14,7 +14,6 @@ def get_simple_model(*args, **kwargs) -> dict:
 
 
 class SimpleModel(object):
-
     def __init__(self, input_shape: Tuple, output_classes: int, *args, **kwargs):
         self.input_shape = input_shape
         self.output_classes = output_classes
@@ -27,7 +26,7 @@ class SimpleModel(object):
 
         # first hidden layer
         model.add(Conv2D(32, (3, 3), padding="same", input_shape=self.input_shape))
-        model.add(Activation('relu'))
+        model.add(Activation("relu"))
 
         # second hidden layer
         model.add(Conv2D(16, (3, 3), padding="same"))
@@ -42,20 +41,23 @@ class SimpleModel(object):
         # and feed into dense layer
         model.add(Flatten())
         model.add(Dense(512))
-        model.add(Activation('relu'))
+        model.add(Activation("relu"))
         model.add(Dropout(0.5))
 
         # Outputs from dense layer are projected onto output layer
         model.add(Dense(self.output_classes))
-        model.add(Activation('sigmoid'))
+        model.add(Activation("sigmoid"))
 
         return model
 
 
 def compile_model(model: Model, output_classes_count: int, optimizer: Optimizer):
-    loss = 'binary_crossentropy' if output_classes_count == 1 else 'categorical_crossentropy'
+    loss = (
+        "binary_crossentropy"
+        if output_classes_count == 1
+        else "categorical_crossentropy"
+    )
 
-    model.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
+    model.compile(optimizer=optimizer, loss=loss, metrics=["accuracy"])
 
     return dict(compiled_model=model)
-

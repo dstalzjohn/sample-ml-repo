@@ -11,14 +11,14 @@ def get_train_nodes():
 
     model_node = node(
         get_simple_model,
-        inputs=dict(input_shape="params:input_shape", output_classes="params:n_classes"),
+        inputs=dict(
+            input_shape="params:input_shape", output_classes="params:n_classes"
+        ),
         outputs=dict(model="model"),
     )
 
     optimizer_node = node(
-        init_object,
-        inputs=["params:optimizer"],
-        outputs="optimizer",
+        init_object, inputs=["params:optimizer"], outputs="optimizer",
     )
 
     # compile_node = node(
@@ -31,36 +31,32 @@ def get_train_nodes():
     callback_node = node(
         create_callbacks_node,
         inputs=["params:callbacks"],
-        outputs=dict(callbacks="init_callbacks")
+        outputs=dict(callbacks="init_callbacks"),
     )
 
     train_node = node(
         fit_generator,
-        inputs=dict(epochs="params:epochs",
-                    model="model",
-                    optimizer="optimizer",
-                    train_set="data_train",
-                    validation_set="data_validation",
-                    callbacks="init_callbacks",
-                    loss="params:loss"),
-        outputs=dict(history="history")
+        inputs=dict(
+            epochs="params:epochs",
+            model="model",
+            optimizer="optimizer",
+            train_set="data_train",
+            validation_set="data_validation",
+            callbacks="init_callbacks",
+            loss="params:loss",
+        ),
+        outputs=dict(history="history"),
     )
 
-    return [
-            model_node,
-            optimizer_node,
-            callback_node,
-            train_node
-        ]
+    return [model_node, optimizer_node, callback_node, train_node]
 
 
 def create_pipeline():
 
     train_node_list = get_train_nodes()
     # connection arg is only used to connect the test nodes after the train graph
-    test_node_list = get_test_nodes(connection_arg="history", exp_id_var="params:dummy_arg")
-
-    return Pipeline(
-        train_node_list +
-        test_node_list
+    test_node_list = get_test_nodes(
+        connection_arg="history", exp_id_var="params:dummy_arg"
     )
+
+    return Pipeline(train_node_list + test_node_list)
