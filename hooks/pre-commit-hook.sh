@@ -17,19 +17,3 @@ cd "$project_dir"
 echo "## Formatting"
 time poetry run black "$main_module"
 
-
-#####
-echo "## Security"
-SECONDS=0
-security="$(poetry run bandit -r $main_module/ -o hooks/reports/bandit)"
-duration=$SECONDS
-security_exit_code=$?
-echo "$security"
-echo "total    $(($duration / 60))m$(($duration % 60))s"
-if [[ ! $security_exit_code == 0 ]]; then
-  echo "security issues found"
-  exit 1
-fi
-
-time poetry run pip freeze | poetry run safety check --stdin --cache >> hooks/reports/safety
-

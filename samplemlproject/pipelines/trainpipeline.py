@@ -2,15 +2,16 @@ from kedro.pipeline import Pipeline, node
 
 from ccmlutils.callbacks.createcallbacks import create_callbacks_node
 from ccmlutils.procedures.defaulttrain import fit_generator
-from samplemlproject.models.simplemodel import get_simple_model, compile_model
-from samplemlproject.pipelines.testpipeline import get_test_nodes
+from bkvalvebagclassification.models.mobilenet import get_mobilenet_model
+from bkvalvebagclassification.models.simplemodel import get_simple_model, compile_model
+from bkvalvebagclassification.pipelines.testpipeline import get_test_nodes
 from ccmlutils.utilities.factoryutils import init_object
 
 
 def get_train_nodes():
 
     model_node = node(
-        get_simple_model,
+        get_mobilenet_model,
         inputs=dict(
             input_shape="params:input_shape", output_classes="params:n_classes"
         ),
@@ -55,8 +56,16 @@ def create_pipeline():
 
     train_node_list = get_train_nodes()
     # connection arg is only used to connect the test nodes after the train graph
+
     test_node_list = get_test_nodes(
-        connection_arg="history", exp_id_var="params:dummy_arg"
+        exp_id_var="params:test_exp", connection_arg="history", set_to_test="data_test"
+    )
+    validation_node_list = get_test_nodes(
+        exp_id_var="params:test_exp", connection_arg="history", set_to_test="data_validation"
+    )
+    testtrain_node_list = get_test_nodes(
+        exp_id_var="params:test_exp", connection_arg="history", set_to_test="data_train_eval"
     )
 
-    return Pipeline(train_node_list + test_node_list)
+
+    return Pipeline(train_node_list + test_node_list + validation_node_list + testtrain_node_list)

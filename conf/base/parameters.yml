@@ -38,7 +38,7 @@ loss: binary_crossentropy
 # input_shape for building the model
 input_shape: [100, 100, 3]
 
-metric_yaml_file: metrics_test.yml
+metric_yaml_file: metrics
 test_pipeline_name: testpipeline
 train_pipeline_name: trainpipeline
 pred_filename: predictions

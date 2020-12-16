@@ -10,6 +10,7 @@ data_train:
   target_size: &target_size [100, 100]
   batch_size: 16
   shuffle: true
+  set_name: train
 
 data_validation:
   type: *datasetclass
@@ -20,6 +21,7 @@ data_validation:
   target_size: *target_size
   batch_size: 16
   shuffle: false
+  set_name: validation
 
 data_test:
   type: *datasetclass
@@ -30,5 +32,16 @@ data_test:
   target_size: *target_size
   batch_size: 16
   shuffle: false
+  set_name: test
 
 
+data_train_eval:
+  type: *datasetclass
+  filepath: *datapath
+  classes: *classes
+  sub_dir: train
+  rescale: *rescale
+  target_size: *target_size
+  batch_size: 16
+  shuffle: false
+  set_name: train
