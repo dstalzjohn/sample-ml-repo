@@ -2,16 +2,16 @@ from kedro.pipeline import Pipeline, node
 
 from ccmlutils.callbacks.createcallbacks import create_callbacks_node
 from ccmlutils.procedures.defaulttrain import fit_generator
-from bkvalvebagclassification.models.mobilenet import get_mobilenet_model
-from bkvalvebagclassification.models.simplemodel import get_simple_model, compile_model
-from bkvalvebagclassification.pipelines.testpipeline import get_test_nodes
+
+from samplemlproject.models.simplemodel import get_simple_model
+from samplemlproject.pipelines.testpipeline import get_test_nodes
 from ccmlutils.utilities.factoryutils import init_object
 
 
 def get_train_nodes():
 
     model_node = node(
-        get_mobilenet_model,
+        get_simple_model,
         inputs=dict(
             input_shape="params:input_shape", output_classes="params:n_classes"
         ),

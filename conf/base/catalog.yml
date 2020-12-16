@@ -1,11 +1,11 @@
 
 data_train:
   type: &datasetclass ccmlutils.datasets.imageflowdataset.ImageFlowDataset
-  filepath: &datapath /path/to/fruits-360_dataset/fruits-360
+  filepath: &datapath /path/to/fruits-360
   classes: &classes
     - Avocado
     - Banana
-  sub_dir: Training
+  sub_dir: &subdir_train Training
   rescale: &rescale 0.00392156862745098 # 1/255.
   target_size: &target_size [100, 100]
   batch_size: 16
@@ -39,7 +39,7 @@ data_train_eval:
   type: *datasetclass
   filepath: *datapath
   classes: *classes
-  sub_dir: train
+  sub_dir: *subdir_train
   rescale: *rescale
   target_size: *target_size
   batch_size: 16
